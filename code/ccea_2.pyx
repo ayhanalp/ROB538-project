@@ -125,7 +125,7 @@ cdef class Evo_MLP:
         mul(self.hiddenToOutMat, self.hidden, self.out)
         addInPlace(self.out, self.hiddenToOutBias)
         tanhInPlace(self.out)
-        return np.argmax(self.npOut) #change
+        return np.argmax(self.out) #change
 
     cpdef mutate(self):
         cdef double m = 1
