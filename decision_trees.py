@@ -32,23 +32,19 @@ if __name__ == "__main__":
 
         try:
             timestep = states.pop()
-
-            for rover_i, rover_state in enumerate(timestep):
-
-                action = nets[rover_i].get_action(rover_state)
-
-                state_data_for_action[action].append(rover_state)
-                agent_data_for_action[action].append(rover_i)
-
-                state_data_for_agent[rover_i].append(rover_state)
-                action_data_for_agent[rover_i].append(action)
-
         except IndexError:
             print("All time steps parsed")
             break
-        except KeyboardInterrupt:
-            print("Interrupted")
-            exit(-1)
+
+        for rover_i, rover_state in enumerate(timestep):
+
+            action = nets[rover_i].get_action(rover_state)
+
+            state_data_for_action[action].append(rover_state)
+            agent_data_for_action[action].append(rover_i)
+
+            state_data_for_agent[rover_i].append(rover_state)
+            action_data_for_agent[rover_i].append(action)
 
     for i in range(num_actions):
 
