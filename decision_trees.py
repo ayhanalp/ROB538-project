@@ -1,8 +1,24 @@
 import argparse
 import pickle
 from sklearn import tree
+from sklearn.tree import export_graphviz
 import numpy as np
 import graphviz
+import pydotplus
+import io
+import imageio
+from matplotlib import pyplot as plt
+from sklearn.metrics import accuracy_score
+
+
+def show_tree(tree, features, path) :
+    f = io.StringIO()
+    export_graphviz(tree, out_file=f, feature_names=features)
+    pydotplus.graph_from_dot_data(f.getvalue()).write_png(path)
+    img = imageio.imread(path)
+    plt.rcParams["figure.figsize"] = (20, 20)
+    plt.imshow(img)
+
 
 if __name__ == "__main__":
 
@@ -59,6 +75,8 @@ if __name__ == "__main__":
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
         graph.render("action_%d_tree" % i)
+        features = ["a", "b", "c"]
+        show_tree(d_tree, features, 'dec_tree_act' + str(i) + '.png')
 
     for i in range(num_agents):
 
@@ -73,3 +91,7 @@ if __name__ == "__main__":
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
         graph.render("agent_%d_tree" % i)
+
+        features = ["a", "b", "c"]
+        show_tree(d_tree, features, 'dec_tree_agnt' + str(i) + '.png')
+
