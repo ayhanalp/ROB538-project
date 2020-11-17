@@ -8,7 +8,6 @@ import pydotplus
 import io
 import imageio
 from matplotlib import pyplot as plt
-from sklearn.metrics import accuracy_score
 
 
 def show_tree(tree, features, path) :
