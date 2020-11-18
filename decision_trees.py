@@ -107,7 +107,7 @@ if __name__ == "__main__":
                     "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
                     "POI Type D Sensor - SE",
                     "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
-                    "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
+                    "Type A (h.b.o.)", "Type B (h.b.o.)", "Type C (h.b.o.)", "Type D (h.b.o.)"]
 
         class_names = ["Rover_0", "Rover_1", "Rover_2", "Rover_3", "Rover_4", "Rover_5", "Rover_6", "Rover_7"]
         agents_seen = np.unique(y)
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                     "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
                     "POI Type D Sensor - SE",
                     "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
-                    "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
+                    "Type A (h.b.o.)", "Type B (h.b.o.)", "Type C (h.b.o.)", "Type D (h.b.o.)"]
 
         class_names = ["POI_A", "POI_B", "POI_C", "POI_D"]
         actions_seen = np.unique(y)
