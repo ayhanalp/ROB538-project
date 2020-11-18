@@ -12,9 +12,9 @@ import pandas as pd
 from sklearn.tree import export_text
 
 
-def show_tree(tree, features, path) :
+def show_tree(tree, features, c_names,  path) :
     f = io.StringIO()
-    export_graphviz(tree, out_file=f, feature_names=features)
+    export_graphviz(tree, out_file=f, feature_names=features, class_names=c_names)
     pydotplus.graph_from_dot_data(f.getvalue()).write_png(path)
     img = imageio.imread(path)
     plt.rcParams["figure.figsize"] = (20, 20)
@@ -70,8 +70,10 @@ if __name__ == "__main__":
         x = np.array(state_data_for_action[i])
         y = np.array(agent_data_for_action[i])
 
+
         d_tree = tree.DecisionTreeClassifier()
         d_tree = d_tree.fit(x, y)
+
 
         '''
         # To export DT as text
@@ -107,7 +109,9 @@ if __name__ == "__main__":
                     "POI Type D Sensor - SE",
                     "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
                     "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
-        show_tree(d_tree, features, 'dec_tree_act' + str(i) + '.png')
+
+        class_names = ["Rover_0", "Rover_1", "Rover_2", "Rover_3", "Rover_4", "Rover_5", "Rover_6", "Rover_7"]
+        show_tree(d_tree, features, class_names, 'dec_tree_act' + str(i) + '.png')
 
     for i in range(num_agents):
 
@@ -118,6 +122,12 @@ if __name__ == "__main__":
 
         d_tree = tree.DecisionTreeClassifier()
         d_tree = d_tree.fit(x, y)
+
+        '''
+        # To export DT as text
+        r = export_text(d_tree)
+        print(r)
+        '''
 
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
@@ -134,5 +144,7 @@ if __name__ == "__main__":
                     "POI Type D Sensor - SE",
                     "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
                     "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
-        show_tree(d_tree, features, 'dec_tree_agnt' + str(i) + '.png')
+
+        class_names = ["POI_A", "POI_B", "POI_C", "POI_D"]
+        show_tree(d_tree, features, class_names, 'dec_tree_agnt' + str(i) + '.png')
 
