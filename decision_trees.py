@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
         dot_data = tree.export_graphviz(d_tree, precision=2, proportion=True, out_file=None)
         graph = graphviz.Source(dot_data)
-        graph.render("action_%d_tree" % i)
+        # graph.render("action_%d_tree" % i)
 
         features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
                     "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         class_names = ["Rover_0", "Rover_1", "Rover_2", "Rover_3", "Rover_4", "Rover_5", "Rover_6", "Rover_7"]
         agents_seen = np.unique(y)
         classes = [class_names[agent] for agent in agents_seen]
-        show_tree(d_tree, features, classes, 'dec_tree_act' + str(i) + '.png')
+        show_tree(d_tree, features, classes, 'DT_Figures/dec_tree_act' + str(i) + '.png')
 
     for i in range(num_agents):
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
-        graph.render("agent_%d_tree" % i)
+        # graph.render("agent_%d_tree" % i)
 
         features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
                     "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
@@ -149,5 +149,5 @@ if __name__ == "__main__":
         class_names = ["POI_A", "POI_B", "POI_C", "POI_D"]
         actions_seen = np.unique(y)
         classes = [class_names[action] for action in actions_seen]
-        show_tree(d_tree, features, classes, 'dec_tree_agnt' + str(i) + '.png')
+        show_tree(d_tree, features, classes, 'DT_Figures/dec_tree_agnt' + str(i) + '.png')
 
