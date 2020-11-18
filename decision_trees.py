@@ -8,6 +8,8 @@ import pydotplus
 import io
 import imageio
 from matplotlib import pyplot as plt
+import pandas as pd
+from sklearn.tree import export_text
 
 
 def show_tree(tree, features, path) :
@@ -71,10 +73,40 @@ if __name__ == "__main__":
         d_tree = tree.DecisionTreeClassifier()
         d_tree = d_tree.fit(x, y)
 
+        '''
+        # To export DT as text
+        r = export_text(d_tree)
+        print(r)
+        '''
+
+        '''
+        sensors are divided into 90 deg segments with directions NE, NW, SW, SE
+        we have the following:
+        agent sensor (4)
+        poi type A sensor(4)
+        poi type B sensor(4)
+        poi type C sensor(4)
+        poi type D sensor(4)
+        List of types that must be observed(4)
+        the types that have been observed so far(4)
+        so the input should be size 28
+        '''
+
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
         graph.render("action_%d_tree" % i)
-        features = ["a", "b", "c"]
+
+        features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
+                    "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
+                    "POI Type A Sensor - SE",
+                    "POI Type B Sensor - NE", "POI Type B Sensor - NW", "POI Type B Sensor - SW",
+                    "POI Type B Sensor - SE",
+                    "POI Type C Sensor - NE", "POI Type C Sensor - NW", "POI Type C Sensor - SW",
+                    "POI Type C Sensor - SE",
+                    "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
+                    "POI Type D Sensor - SE",
+                    "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
+                    "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
         show_tree(d_tree, features, 'dec_tree_act' + str(i) + '.png')
 
     for i in range(num_agents):
@@ -91,6 +123,16 @@ if __name__ == "__main__":
         graph = graphviz.Source(dot_data)
         graph.render("agent_%d_tree" % i)
 
-        features = ["a", "b", "c"]
+        features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
+                    "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
+                    "POI Type A Sensor - SE",
+                    "POI Type B Sensor - NE", "POI Type B Sensor - NW", "POI Type B Sensor - SW",
+                    "POI Type B Sensor - SE",
+                    "POI Type C Sensor - NE", "POI Type C Sensor - NW", "POI Type C Sensor - SW",
+                    "POI Type C Sensor - SE",
+                    "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
+                    "POI Type D Sensor - SE",
+                    "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
+                    "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
         show_tree(d_tree, features, 'dec_tree_agnt' + str(i) + '.png')
 
