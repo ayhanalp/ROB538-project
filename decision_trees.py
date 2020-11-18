@@ -70,8 +70,7 @@ if __name__ == "__main__":
         x = np.array(state_data_for_action[i])
         y = np.array(agent_data_for_action[i])
 
-
-        d_tree = tree.DecisionTreeClassifier()
+        d_tree = tree.DecisionTreeClassifier(max_depth=4)
         d_tree = d_tree.fit(x, y)
 
 
