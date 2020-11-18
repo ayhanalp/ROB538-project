@@ -111,7 +111,9 @@ if __name__ == "__main__":
                     "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
 
         class_names = ["Rover_0", "Rover_1", "Rover_2", "Rover_3", "Rover_4", "Rover_5", "Rover_6", "Rover_7"]
-        show_tree(d_tree, features, class_names, 'dec_tree_act' + str(i) + '.png')
+        agents_seen = np.unique(y)
+        classes = [class_names[agent] for agent in agents_seen]
+        show_tree(d_tree, features, classes, 'dec_tree_act' + str(i) + '.png')
 
     for i in range(num_agents):
 
@@ -146,5 +148,7 @@ if __name__ == "__main__":
                     "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)", "Type A (h.b.o.)"]
 
         class_names = ["POI_A", "POI_B", "POI_C", "POI_D"]
-        show_tree(d_tree, features, class_names, 'dec_tree_agnt' + str(i) + '.png')
+        actions_seen = np.unique(y)
+        classes = [class_names[action] for action in actions_seen]
+        show_tree(d_tree, features, classes, 'dec_tree_agnt' + str(i) + '.png')
 
