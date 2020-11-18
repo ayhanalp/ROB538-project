@@ -70,7 +70,7 @@ if __name__ == "__main__":
         x = np.array(state_data_for_action[i])
         y = np.array(agent_data_for_action[i])
 
-        d_tree = tree.DecisionTreeClassifier(max_depth=4, max_leaf_nodes=4)
+        d_tree = tree.DecisionTreeClassifier(max_depth=4)
         d_tree = d_tree.fit(x, y)
 
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         so the input should be size 28
         '''
 
-        dot_data = tree.export_graphviz(d_tree, out_file=None)
+        dot_data = tree.export_graphviz(d_tree, precision=2, proportion=True, out_file=None)
         graph = graphviz.Source(dot_data)
         graph.render("action_%d_tree" % i)
 
