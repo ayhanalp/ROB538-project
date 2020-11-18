@@ -14,7 +14,7 @@ from sklearn.tree import export_text
 
 def show_tree(tree, features, c_names,  path) :
     f = io.StringIO()
-    export_graphviz(tree, out_file=f, feature_names=features, class_names=c_names)
+    export_graphviz(tree, out_file=f, feature_names=features, precision=2, proportion=True, class_names=c_names)
     pydotplus.graph_from_dot_data(f.getvalue()).write_png(path)
     img = imageio.imread(path)
     plt.rcParams["figure.figsize"] = (20, 20)
