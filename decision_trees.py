@@ -20,6 +20,48 @@ def show_tree(tree, features, c_names,  path) :
     plt.rcParams["figure.figsize"] = (20, 20)
     plt.imshow(img)
 
+def expand(state,n_agents):
+
+    
+    t_steps=state.shape[0]
+    state=np.reshape(state,(n_agents*t_steps,28))
+    cov=np.cov(state.T)
+
+    state=np.reshape(state,(n_agents,t_steps,28))
+
+    
+    columns=[]
+    for i in range(1,28):
+        for j in range(i):
+            columns.append(state[:,:,i]*(state[:,:,j]+0.001))
+    columns=np.array(columns)
+    columns=np.reshape(columns,(n_agents,t_steps,-1))
+    
+    state=np.concatenate((state,columns),axis=2)
+    state=np.reshape(state,(t_steps,n_agents,-1))
+    return state
+
+        
+                
+    print(cov.shape)
+
+def feet():
+    features=["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
+                    "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
+                    "POI Type A Sensor - SE",
+                    "POI Type B Sensor - NE", "POI Type B Sensor - NW", "POI Type B Sensor - SW",
+                    "POI Type B Sensor - SE",
+                    "POI Type C Sensor - NE", "POI Type C Sensor - NW", "POI Type C Sensor - SW",
+                    "POI Type C Sensor - SE",
+                    "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
+                    "POI Type D Sensor - SE",
+                    "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
+                    "Type A (h.b.o.)", "Type B (h.b.o.)", "Type C (h.b.o.)", "Type D (h.b.o.)"]
+    new_feats=[]
+    for i in range(1,28):
+        for j in range(i):
+            new_feats.append(features[i]+" & "+features[j])
+    return features+new_feats
 
 if __name__ == "__main__":
 
@@ -35,32 +77,32 @@ if __name__ == "__main__":
 
     with open(data_file, "rb") as f:
         states, history, nets = pickle.load(f)
-
+    states=np.array(states)
+    states=states[::10,:,:]
+    print(states.shape)
     num_actions = 4
     num_agents = len(states[0])
-
+    new_states=expand(states,num_agents)
     state_data_for_action = [[] for _ in range(num_actions)]
     agent_data_for_action = [[] for _ in range(num_actions)]
 
     state_data_for_agent = [[] for _ in range(num_agents)]
     action_data_for_agent = [[] for _ in range(num_agents)]
 
-    while True:
+    for timestep,statestep in zip (states,new_states):
 
-        try:
-            timestep = states.pop()
-        except IndexError:
-            print("All time steps parsed")
-            break
+    
 
         for rover_i, rover_state in enumerate(timestep):
-
+            
+            expanded=statestep[rover_i]
+            
             action = nets[rover_i].get_action(rover_state)
 
-            state_data_for_action[action].append(rover_state)
+            state_data_for_action[action].append(expanded)
             agent_data_for_action[action].append(rover_i)
 
-            state_data_for_agent[rover_i].append(rover_state)
+            state_data_for_agent[rover_i].append(expanded)
             action_data_for_agent[rover_i].append(action)
 
     for i in range(num_actions):
@@ -97,17 +139,7 @@ if __name__ == "__main__":
         graph = graphviz.Source(dot_data)
         # graph.render("action_%d_tree" % i)
 
-        features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
-                    "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
-                    "POI Type A Sensor - SE",
-                    "POI Type B Sensor - NE", "POI Type B Sensor - NW", "POI Type B Sensor - SW",
-                    "POI Type B Sensor - SE",
-                    "POI Type C Sensor - NE", "POI Type C Sensor - NW", "POI Type C Sensor - SW",
-                    "POI Type C Sensor - SE",
-                    "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
-                    "POI Type D Sensor - SE",
-                    "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
-                    "Type A (h.b.o.)", "Type B (h.b.o.)", "Type C (h.b.o.)", "Type D (h.b.o.)"]
+        features = feet()
 
         class_names = ["Rover_0", "Rover_1", "Rover_2", "Rover_3", "Rover_4", "Rover_5", "Rover_6", "Rover_7"]
         agents_seen = np.unique(y)
@@ -133,19 +165,8 @@ if __name__ == "__main__":
         dot_data = tree.export_graphviz(d_tree, out_file=None)
         graph = graphviz.Source(dot_data)
         # graph.render("agent_%d_tree" % i)
-
-        features = ["Agent Sensor - NE", "Agent Sensor - NW", "Agent Sensor - SW", "Agent Sensor - SE",
-                    "POI Type A Sensor - NE", "POI Type A Sensor - NW", "POI Type A Sensor - SW",
-                    "POI Type A Sensor - SE",
-                    "POI Type B Sensor - NE", "POI Type B Sensor - NW", "POI Type B Sensor - SW",
-                    "POI Type B Sensor - SE",
-                    "POI Type C Sensor - NE", "POI Type C Sensor - NW", "POI Type C Sensor - SW",
-                    "POI Type C Sensor - SE",
-                    "POI Type D Sensor - NE", "POI Type D Sensor - NW", "POI Type D Sensor - SW",
-                    "POI Type D Sensor - SE",
-                    "Type A (t.b.o.)", "Type B (t.b.o.)", "Type C (t.b.o.)", "Type D (t.b.o.)",
-                    "Type A (h.b.o.)", "Type B (h.b.o.)", "Type C (h.b.o.)", "Type D (h.b.o.)"]
-
+        
+        features = feet()
         class_names = ["POI_A", "POI_B", "POI_C", "POI_D"]
         actions_seen = np.unique(y)
         classes = [class_names[action] for action in actions_seen]
